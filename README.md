@@ -10,3 +10,6 @@ Use the makefile. This will include all the flags and dependencies that you can'
 Compiles to a bin folder so check that out for running the program.
 
 # our results
+
+# references
+Kruskal code was got from geeks for geeks. Modified slightly to suit the nature of this program.
