@@ -24,5 +24,7 @@ int main()
 	Graph graph(edges);
   
     Graph mst = KruskalMST(graph);
+
+	mst.print();
 	return 0;
 }
