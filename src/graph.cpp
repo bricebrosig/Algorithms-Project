@@ -26,15 +26,19 @@ void Union(std::vector<subset> subsets, int x, int y)
     // rank tree (Union by Rank) 
     if (subsets[xroot].rank < subsets[yroot].rank) 
         subsets[xroot].parent = yroot; 
-    else if (subsets[xroot].rank > subsets[yroot].rank) 
+    else if (subsets[xroot].rank > subsets[yroot].rank){
         subsets[yroot].parent = xroot; 
+     
+        
   
     // If ranks are same, then make one as root and  
     // increment its rank by one 
-    else { 
+    } else { 
         subsets[yroot].parent = xroot; 
-        subsets[xroot].rank++; 
+        subsets[xroot].rank++;
+        //subsets[yroot].rank++;
     } 
+
 }
 
 bool myComp(edge a, edge b) { 
@@ -56,7 +60,7 @@ Graph KruskalMST(Graph graph)
     //qsort(graph->edge, graph->E, sizeof(graph->edge[0]), myComp);
     std::sort(temp_edges.begin(), temp_edges.end(), myComp);
 
-    // Allocate memory for creating V ssubsets 
+    // Allocate memory for creating V subsets 
     //subset *subsets = (subset*) malloc( V * sizeof(subset) );
     std::vector<subset> subsets(V); 
   
@@ -73,18 +77,23 @@ Graph KruskalMST(Graph graph)
         edge next_edge = temp_edges[i++];
   
         int x = find(subsets, next_edge.src); 
+
+        
         int y = find(subsets, next_edge.dest); 
+        //printf("Found Y: %d\n", y);
   
         // If including this edge does't cause cycle, 
         // include it in result and increment the index  
         // of result for next edge 
         if (x != y) { 
             //result[e++] = next_edge;
+
             result.push_back(next_edge);
             Union(subsets, x, y); 
-        } 
+            e++;
+        }
         // Else discard the next_edge 
-        e++;
+        //e++;
     } 
 
     // print the contents of result[] to display the 
