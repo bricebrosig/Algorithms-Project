@@ -15,6 +15,10 @@ Graph representation
 
 typedef struct edge {
     int src, dest, weight;
+
+    bool operator==(const edge& e) {
+        return (src == e.src) && (dest == e.dest) && (weight == e.weight);
+    }
 }edge;
 
 typedef struct subset {
@@ -44,7 +48,10 @@ public:
     Graph(std::vector<int> v) : edgeSet(std::vector<edge>()), vertexSet(v) {} //given a vertex set
     Graph(std::vector<edge> e, std::vector<int> v) : edgeSet(e), vertexSet(v) {} //given edges and vertices
 
-    //some insertion and deletion functions
+    /*
+    add a new edge to edge list if it doesnt already exist
+    returns an int that is the status
+    */
     int insert_edge(edge e);
     int delete_edge(edge e);
     int insert_vertex(int v);
@@ -70,6 +77,18 @@ bool myComp(edge a, edge b);
 //Given a graph, find the MST and return that tree
 //as a graph object. 
 Graph KruskalMST(Graph);
+
+/*
+@brief: takes graph and finds a cycle in the graph
+        After finding. Returns the edges in the cycle. Intent
+        is that the calling function will get either the largest or the smallest
+        out of that vetex and do what they will
+@param: Graph g - takes a graph as input
+@returns: a vector of edges
+@requires: that Graph g is an mst; if not, the algorithm will simply find the
+            find the first cycle and return the largest edge
+*/
+std::vector<edge> findCycle(Graph);
 
 
  

@@ -25,6 +25,7 @@ int main()
   
     Graph mst = KruskalMST(graph);
 
+	printf("mst printed here:\n");
 	mst.print();
 	return 0;
 }

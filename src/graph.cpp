@@ -7,6 +7,24 @@ void Graph::print() {
     }  
 }
 
+int Graph::insert_edge(edge e) {
+    if(std::find(edgeSet.begin(), edgeSet.end(), e) != edgeSet.end()){
+        edgeSet.push_back(e);
+
+        if(std::find(vertexSet.begin(), vertexSet.end(), e.dest) == vertexSet.end()) // if we dont have the dest in vertex set
+            vertexSet.push_back(e.dest);
+        if(std::find(vertexSet.begin(), vertexSet.end(), e.src) == vertexSet.end()) // if we dont have the source in vertex set
+            vertexSet.push_back(e.src);
+
+        return 1;
+    } 
+    return 0;
+}
+
+int Graph::delete_edge(edge e) {
+    return 0;
+}
+
 int find(std::vector<subset> subsets, int i) 
 { 
     // find root and make root as parent of i  
@@ -17,7 +35,7 @@ int find(std::vector<subset> subsets, int i)
     return subsets[i].parent; 
 } 
 
-void Union(std::vector<subset> subsets, int x, int y) 
+void Union(std::vector<subset> & subsets, int x, int y) 
 { 
     int xroot = find(subsets, x); 
     int yroot = find(subsets, y); 
@@ -106,4 +124,9 @@ Graph KruskalMST(Graph graph)
     Graph resultant_mst = Graph(result);
 
     return resultant_mst; 
+}
+
+std::vector<edge> findCycle(Graph G)
+{
+    /*Do DFS*/
 }
