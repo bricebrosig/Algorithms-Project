@@ -3,27 +3,49 @@
 #include <vector>
 #include <algorithm>
 #include <set>
-#include <stack>
 #include <queue>
 #include <map>
 #include "limits.h"
 
-enum color {WHITE, GRAY, BLACK};
+enum color {WHITE, GRAY, BLACK}; //simple enum for the color tracking in the bfs
 
+/**
+ * edge representation as a src, dest, and weight
+ * has == overloaded for easy comparison
+ */ 
 typedef struct edge {
     int src, dest, weight;
 
     bool operator==(const edge& e) {
-        return (src == e.src) && (dest == e.dest) && (weight == e.weight);
+        return ((src == e.src) && (dest == e.dest) && (weight == e.weight))
+                || ((src == e.dest) && (dest == e.src) && (weight == e.weight));
     }
 }edge;
 
+/**
+ * subset for the kruskal algorithm
+ */ 
 typedef struct subset {
     int parent, rank;
 }subset;
 
-//undirected and weighted graph represetation
-//adjacency list format
+/**
+ * * Class Graph
+ * edgeset & vertex set representaion of a graph
+ * has operations for insert and delete as well as an insert and delete
+ * that will maintain the integrity of the mst
+ * 
+ * NOTE:that we have two functions for insert and delete.
+ *      The two that start with "true", true_delete() and true_insert() are 
+ *      regular insertion and deletion. That is, they just find what you ask and they
+ *      insert or delete, respectively.
+ * 
+ *      The other two, insert_edge and delete_edge, assume that th graph is an mst and will
+ *      maintain the integrity of the mst when called. That is, they will do the desired operation
+ *      but also add a new edge to the mst or rebuild the mst should it become disjoint.
+ * 
+ * TODO: have this graph duplicate all the edges backwards as it is undirected...
+ */ 
 class Graph
 {
 public:
@@ -45,12 +67,35 @@ public:
     Graph(std::vector<int> v) : edgeSet(std::vector<edge>()), vertexSet(v) {} //given a vertex set
     Graph(std::vector<edge> e, std::vector<int> v) : edgeSet(e), vertexSet(v) {} //given edges and vertices
 
+    //TODO: think about changing these to some new more informative names since they do extra stuff
     /**
-     *add a new edge to edge list if it doesnt already exist
-     *returns an int that is the status
+     * @brief: this is the modified insert that checks for a cycle first
+     * @param egde e: takes the edge that is to be inserted
+     * @return: an int as status; 1 for inserted, 0 for not inserted
      */
     int insert_edge(edge e);
+
+    /**
+     * @brief: delete that considered the integrity of the mst. upon deleting it will
+     *          repair the mst
+     * @param edge e: takes the edge that is to be deleted
+     * @return: int that is the status; 1 for delted, 0 for not
+     */
     int delete_edge(edge e);
+
+    /**
+     * @brief: true insert simply puts an edge into the graph without consideration of the mst
+     * @param edge e: takes the edge that is to be inserted
+     * @return: returns an int as status of the insertion; 1 for inserted, 0 for not
+     */
+    int true_insert(edge);
+
+    /**
+     * @brief: true_dele simply removes an edge from the graph without consideration of the mst
+     * @param edge e: takes the edge that is to be deleted
+     * @return: int that is the status of the deletion; 1 for good and 0 for bad
+     */ 
+    int true_delete(edge);
 
     /**
      * @brief: looks through edgelist to find what is adjacent to the vertex given
@@ -61,12 +106,23 @@ public:
     
     /**
      * !this might need to change to a float
+     * @brief: given the source and destination of the edge, gets the wieght asociated
+     * @param int src: the src of the edge in question
+     * @param int dest: the dest of the edge in question
+     * @return: the weight of the given src and destination;
+     *          returns -1 if its not found
      */
     int getWeight(int src, int dest);
 
-    //a pretty print for the graph
+    /**
+     * @brief: simple pretty print for the graph. Walks through edge set and prints the src
+     *          dest, and weight associated on each line
+     * @return: void; just prints to terminal
+     */ 
     void print();
 };
+
+/*==========UTILITY_FUNCITONS============*/
 
 // A utility function to find set of an element i 
 // (uses path compression technique) 

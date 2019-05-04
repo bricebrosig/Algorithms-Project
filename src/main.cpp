@@ -31,22 +31,26 @@ int main()
 	/* and now this one
 	
 		1--2--3
-		|     |
+		|  !  |
 		7  6--5--4
+
+		NOTE: exclamation is the inserted edge for testing
 	*/
+
+	printf("\n==testing insertion==\n\n");
 
 	std::vector<edge> test;
 
-	test.emplace_back(edge{1,2,1});
-	test.emplace_back(edge{2,3,1});
-	test.emplace_back(edge{3,5,1});
-	test.emplace_back(edge{5,4,1});
-	test.emplace_back(edge{5,6,1});
+	test.emplace_back(edge{1,2,2});
+	test.emplace_back(edge{2,3,2});
+	test.emplace_back(edge{3,5,3});
+	test.emplace_back(edge{5,4,2});
+	test.emplace_back(edge{5,6,2});
 	test.emplace_back(edge{1,7,1});
 
 	Graph testCycles(test);
+	testCycles.insert_edge(edge{2,6,1});
 	testCycles.print();
-	std::vector<edge> temp = findCycle(testCycles, edge{2,6,1});
 
 	return 0;
 }
