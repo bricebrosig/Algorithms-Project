@@ -3,7 +3,7 @@
 void Graph::print() {
     printf("Graph pretty print:\n");
     for(auto e : edgeSet) {
-        printf("%d - %d : %d\n", e.src, e.dest, e.weight);
+        printf("%d - %d : %f\n", e.src, e.dest, e.weight);
     }  
 }
 
@@ -92,10 +92,17 @@ Graph KruskalMST(Graph graph)
     while (e < V - 1) { 
         // Step 2: Pick the smallest edge. And increment  
         // the index for next iteration 
+        
         edge next_edge = temp_edges[i++];
-  
+        if(i > temp_edges.size())
+        {
+            printf("i is too big! e: %d, V-1: %d\n", e, V-1);
+            Graph resultant_mst = Graph(result);
+            return resultant_mst;
+        }
+        //printf("trying src: %d, dest: %d, i: %d, size: %d\n", next_edge.src, next_edge.dest, i, temp_edges.size());
         int x = find(subsets, next_edge.src); 
-
+        //printf("Found X: %d\n", x);
         
         int y = find(subsets, next_edge.dest); 
         //printf("Found Y: %d\n", y);
@@ -112,13 +119,14 @@ Graph KruskalMST(Graph graph)
         }
         // Else discard the next_edge 
         //e++;
+        //printf("e = %d, V - 1: %d, i: %d, sizeofEdges: %d , x: %d y: %d\n", e, V -1, i, graph.getEdgeSet().size(), x, y);
     } 
 
     // print the contents of result[] to display the 
     // built MST 
     printf("Following are the edges in the constructed MST\n"); 
     for (auto r : result) 
-        printf("%d -- %d == %d\n", r.src, r.dest, r.weight); 
+        printf("%d -- %d == %f\n", r.src, r.dest, r.weight); 
 
     //now that result has what it needs, make the graph ( tree ) with that stuff
     Graph resultant_mst = Graph(result);
@@ -126,7 +134,8 @@ Graph KruskalMST(Graph graph)
     return resultant_mst; 
 }
 
-std::vector<edge> findCycle(Graph G)
-{
-    /*Do DFS*/
-}
+// std::vector<edge> findCycle(Graph G)
+// {
+//     /*Do DFS*/
+//     return;
+// }

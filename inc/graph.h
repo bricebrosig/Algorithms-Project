@@ -10,11 +10,14 @@ Graph representation
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <fstream>
+#include <string>
 #include <vector>
 #include <algorithm>
 
 typedef struct edge {
-    int src, dest, weight;
+    int src, dest;
+    float weight;
 
     bool operator==(const edge& e) {
         return (src == e.src) && (dest == e.dest) && (weight == e.weight);
@@ -56,6 +59,9 @@ public:
     int delete_edge(edge e);
     int insert_vertex(int v);
     int delete_vertex(int v);
+
+    //for testing
+    std::vector<edge> getEdgeSet(){return edgeSet;};
 
     //a pretty print for the graph
     void print();
