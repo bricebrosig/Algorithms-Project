@@ -1,17 +1,14 @@
-/*TODO:
-Graph representation
-    Insert
-    Delete
-    kruskal
-    disjoint set
-    Breadth First Search
-        find cycles
-*/
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <algorithm>
+#include <set>
+#include <stack>
+#include <queue>
+#include <map>
+#include "limits.h"
+
+enum color {WHITE, GRAY, BLACK};
 
 typedef struct edge {
     int src, dest, weight;
@@ -48,14 +45,24 @@ public:
     Graph(std::vector<int> v) : edgeSet(std::vector<edge>()), vertexSet(v) {} //given a vertex set
     Graph(std::vector<edge> e, std::vector<int> v) : edgeSet(e), vertexSet(v) {} //given edges and vertices
 
-    /*
-    add a new edge to edge list if it doesnt already exist
-    returns an int that is the status
-    */
+    /**
+     *add a new edge to edge list if it doesnt already exist
+     *returns an int that is the status
+     */
     int insert_edge(edge e);
     int delete_edge(edge e);
-    int insert_vertex(int v);
-    int delete_vertex(int v);
+
+    /**
+     * @brief: looks through edgelist to find what is adjacent to the vertex given
+     * @param: value of the node from which we want to find the adjacencies
+     * @returns: a vector of ints where each int are the values of the adjacent nodes
+    */
+    std::vector<int> getAdjacencies(int v);
+    
+    /**
+     * !this might need to change to a float
+     */
+    int getWeight(int src, int dest);
 
     //a pretty print for the graph
     void print();
@@ -78,17 +85,17 @@ bool myComp(edge a, edge b);
 //as a graph object. 
 Graph KruskalMST(Graph);
 
-/*
-@brief: takes graph and finds a cycle in the graph
-        After finding. Returns the edges in the cycle. Intent
-        is that the calling function will get either the largest or the smallest
-        out of that vetex and do what they will
-@param: Graph g - takes a graph as input
-@returns: a vector of edges
-@requires: that Graph g is an mst; if not, the algorithm will simply find the
-            find the first cycle and return the largest edge
-*/
-std::vector<edge> findCycle(Graph);
+/**
+ * @brief: a BFS that takes a Graph and an edge that got added by insert
+ *          uses the classic color bfs to track parents to get a cycle in the graph
+ * @param Graph: takes a graph that is assumed to be an mst
+ * @param edge: takes an edge that was added by an insert, finds the cycle in the graph that connects
+ *              the two
+ * @returns: a vector of edges that are the edges in the cycle that would be formed by adding the edged passed
+ * @requires: that the graph passed is an mst... not really required but in the context of this program
+ *              that needs to happen.
+ */
+std::vector<edge> findCycle(Graph, edge);
 
 
  

@@ -25,6 +25,29 @@ int Graph::delete_edge(edge e) {
     return 0;
 }
 
+std::vector<int> Graph::getAdjacencies(int s) 
+{
+    std::vector<int> retval;
+    for(auto e : edgeSet) {
+        if(e.src == s) {
+            retval.push_back(e.dest);
+        }
+        if(e.dest == s) {
+            retval.push_back(e.src);
+        }
+    }
+    return retval;
+}
+
+int Graph::getWeight(int src, int dest)
+{
+    for(auto e : edgeSet) 
+        if( (e.src == src && e.dest == dest) || (e.dest == src && e.src == dest) )
+            return e.weight;
+
+    return -1;
+}
+
 int find(std::vector<subset> subsets, int i) 
 { 
     // find root and make root as parent of i  
@@ -126,7 +149,53 @@ Graph KruskalMST(Graph graph)
     return resultant_mst; 
 }
 
-std::vector<edge> findCycle(Graph G)
+std::vector<edge> findCycle(Graph G, edge e)
 {
-    /*Do DFS*/
+    std::vector<edge> retval; //vector that holds the edges to return 
+    std::queue<int> queue; //the queue data structure for the bfs
+    std::map<int, color> colorMap; //mapping vertices to their color
+    std::map<int, int> parentMap; //mapping vertices to their parents
+    int source = e.src; //the source of the cycle
+    int search = e.dest; //the dest of the cycle
+    int s; //need this for the bfs
+    const int DEF_PARENT = -1;
+
+    /*set the colors and parents with default values*/
+    for(auto i : G.vertexSet) {
+        colorMap.insert(std::pair<int, color>(i, WHITE));
+        parentMap.insert(std::pair<int, int>(i, DEF_PARENT));
+    }
+
+    //making the first node gray and pushing it onto the queue
+    //as we have touched it but not finished it
+    colorMap[source] = GRAY;
+    queue.push(source);
+
+    //a lovely bfs
+    while(!queue.empty()) {
+        s = queue.front();
+        queue.pop();
+
+        for (auto i : G.getAdjacencies(s)) {
+            if(colorMap[i] == WHITE) {
+                colorMap[i] = GRAY;
+                parentMap[i] = s;
+                queue.push(i);
+            }
+        }
+        colorMap[s] = BLACK;
+    }
+
+    int i = search;
+    while(parentMap[i] != DEF_PARENT){
+        retval.push_back(edge{i, parentMap[i], G.getWeight(i, parentMap[i])});
+        i = parentMap[i];
+    }
+    retval.push_back(e); // the actual one they wanted to add
+
+    for(auto e : retval) {
+        printf("%d - %d : %d\n", e.src, e.dest, e.weight);
+    }
+    
+    return retval;
 }
