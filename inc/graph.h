@@ -129,7 +129,7 @@ public:
 
 // A utility function to find set of an element i 
 // (uses path compression technique) 
-int find(std::vector<subset> subsets, int i);
+int find(std::vector<subset> &subsets, int i);
 
 // A function that does union of two sets of x and y 
 // (uses union by rank) 

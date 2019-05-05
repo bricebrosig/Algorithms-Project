@@ -97,11 +97,11 @@ int Graph::delete_edge(Graph original, edge e) {
         map[v] = true;
 
     //for each of the edges, add the ones who have a src xor dest in the disjoint verices
-    for(auto e : original.edgeSet) {
-        if( (map[e.src]) ^ (map[e.dest]) ){
-            if(e.weight < smallestEdge) {
-                smallestEdge = e.weight;
-                toAdd = e; //save that as the one that we will add to the tree
+    for(auto i : original.edgeSet) {
+        if( (map[i.src]) ^ (map[i.dest]) ){
+            if(!(i == e) && i.weight < smallestEdge) {
+                smallestEdge = i.weight;
+                toAdd = i; //save that as the one that we will add to the tree
             }
         }
     }
@@ -162,7 +162,7 @@ int Graph::true_delete(edge e)
     return 0;
 }
 
-int find(std::vector<subset> subsets, int i) 
+int find(std::vector<subset> & subsets, int i) 
 { 
     // find root and make root as parent of i  
     // (path compression) 
@@ -191,7 +191,6 @@ void Union(std::vector<subset> & subsets, int x, int y)
     } else { 
         subsets[yroot].parent = xroot; 
         subsets[xroot].rank++;
-        //subsets[yroot].rank++;
     } 
 
 }
@@ -232,8 +231,6 @@ Graph KruskalMST(Graph graph)
         edge next_edge = temp_edges[i++];
   
         int x = find(subsets, next_edge.src); 
-
-        
         int y = find(subsets, next_edge.dest); 
         //printf("Found Y: %d\n", y);
   
@@ -248,7 +245,6 @@ Graph KruskalMST(Graph graph)
             e++;
         }
         // Else discard the next_edge 
-        //e++;
     } 
 
     // print the contents of result[] to display the 
