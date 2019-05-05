@@ -72,6 +72,7 @@ public:
      * @brief: this is the modified insert that checks for a cycle first
      * @param egde e: takes the edge that is to be inserted
      * @return: an int as status; 1 for inserted, 0 for not inserted
+     * @requires: that the calling graph is an mst
      */
     int insert_edge(edge e);
 
@@ -79,9 +80,11 @@ public:
      * @brief: delete that considered the integrity of the mst. upon deleting it will
      *          repair the mst
      * @param edge e: takes the edge that is to be deleted
+     * @param Graph original: the graph from whence the mst came
      * @return: int that is the status; 1 for delted, 0 for not
+     * @requires: that the calling graph is an mst
      */
-    int delete_edge(edge e);
+    int delete_edge(Graph original, edge e);
 
     /**
      * @brief: true insert simply puts an edge into the graph without consideration of the mst
@@ -152,6 +155,18 @@ Graph KruskalMST(Graph);
  *              that needs to happen.
  */
 std::vector<edge> findCycle(Graph, edge);
+
+/**
+ * @brief: a bfs that returns the nodes it visited. The intention is that this graph
+ *         is used on a disjoint graph to only return the nodes from one of the components.
+ *         for use in the delete function in the graph class
+ * @param graph: takes a graph object to perform the bfs on
+ * @param int: takes a starting node 
+ * @returns: vector of ints that are the vertices that it visited
+ * @requires: tentatively, that the graph be disjoint
+ *            also requires that the int is a vertex in the graph
+ */
+std::vector<int> breadFirstSearch(Graph, int);
 
 
  
