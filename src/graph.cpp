@@ -54,20 +54,6 @@ int Graph::insert_edge(edge e) {
         }
 
         for(auto i : edgeSet) { // look through all the edges
-            // if((i.src == cycle[biggest_index].src) && (i.dest == cycle[biggest_index].dest) && (i.weight == cycle[biggest_index].weight)) { // if this edge matches the biggest one from the cycle
-            //     printf("deleting edge: %d-%d:%d\n", i.src, i.dest, i.weight);
-            //     if(true_delete(i) == 0) {
-            //         printf("Delete had a problem!\n");
-            //     }
-            //     return 1;
-            // }
-            // else if((i.src == cycle[biggest_index].dest) && (i.dest == cycle[biggest_index].src) && (i.weight == cycle[biggest_index].weight)) {
-            //     printf("deleting edge: %d-%d:%d\n", i.src, i.dest, i.weight);
-            //     if(true_delete(i) == 0) {
-            //         printf("Delete had a problem!\n");
-            //     }
-            //     return 1;
-            // }
             if(i == cycle[biggest_index]) {
                 printf("deleting edge: %d-%d:%d\n", i.src, i.dest, i.weight);
                  if(true_delete(i) == 0) {
@@ -81,7 +67,47 @@ int Graph::insert_edge(edge e) {
     return 0;
 }
 
-int Graph::delete_edge(edge e) {
+/**
+ * get the edges from the original graph that are not in the mst
+ * get the vertices that are in one of the disjoint trees
+ * for each of the list edges
+ *      see if the src XOR the dest is in the list of vertices
+ *      if it is do the smallest test
+ * TODO: test this function!
+ */
+int Graph::delete_edge(Graph original, edge e) {
+    int smallestEdge = INT_MAX; // for tracking the smallest
+    edge toAdd;
+    std::vector<int> disjoint_vertices;
+    std::map<int, bool> map;
+
+    //get rid of the edge and then find the disjoint vertices
+    true_delete(e);
+    disjoint_vertices = breadFirstSearch(*this, e.src);
+
+    /**
+     * for everything in the original vertex add it to the map and set it to false meaning its not in the disjoint set
+     * then for all of the disjoint vetices, go that index in the map and set it to true
+     * *this is allow for fast look up in the next part
+     */
+    for(auto v : original.vertexSet)
+        map.insert(std::pair<int, bool>(v, false));
+
+    for(auto v : disjoint_vertices)
+        map[v] = true;
+
+    //for each of the edges, add the ones who have a src xor dest in the disjoint verices
+    for(auto i : original.edgeSet) {
+        if( (map[i.src]) ^ (map[i.dest]) ){
+            if(!(i == e) && i.weight < smallestEdge) {
+                smallestEdge = i.weight;
+                toAdd = i; //save that as the one that we will add to the tree
+            }
+        }
+    }
+
+    true_insert(toAdd); //add the smallest to the tree
+
     return 0;
 }
 
@@ -136,7 +162,7 @@ int Graph::true_delete(edge e)
     return 0;
 }
 
-int find(std::vector<subset> subsets, int i) 
+int find(std::vector<subset> & subsets, int i) 
 { 
     // find root and make root as parent of i  
     // (path compression) 
@@ -165,7 +191,6 @@ void Union(std::vector<subset> & subsets, int x, int y)
     } else { 
         subsets[yroot].parent = xroot; 
         subsets[xroot].rank++;
-        //subsets[yroot].rank++;
     } 
 
 }
@@ -213,8 +238,6 @@ Graph KruskalMST(Graph graph)
         }
         //printf("trying src: %d, dest: %d, i: %d, size: %d\n", next_edge.src, next_edge.dest, i, temp_edges.size());
         int x = find(subsets, next_edge.src); 
-        //printf("Found X: %d\n", x);
-        
         int y = find(subsets, next_edge.dest); 
         //printf("Found Y: %d\n", y);
   
@@ -254,7 +277,7 @@ std::vector<edge> findCycle(Graph G, edge e)
     int source = e.src; //the source of the cycle
     int search = e.dest; //the dest of the cycle
     int s; //need this for the bfs
-    const int DEF_PARENT = -1;
+    const int DEF_PARENT = -1; //* this a default parent value that should work... if it doesnt then change it
 
     /*set the colors and parents with default values*/
     for(auto i : G.vertexSet) {
@@ -293,6 +316,38 @@ std::vector<edge> findCycle(Graph G, edge e)
     for(auto e : retval) {
         printf("\t%d - %d : %d\n", e.src, e.dest, e.weight);
     }
-    
+
+    return retval;
+}
+
+/**
+ * an ordinary bfs but it does it on a disjoint graph
+ * only returning the nodes from one component so no need to be
+ * alarmed that we are missing stuff.
+ * motivation is that we want to know what is disjoint from the rest of a graph
+ * for the delete so we know what edges to add back
+ */
+std::vector<int> breadFirstSearch(Graph G, int s)
+{
+    std::queue<int> queue; // queue data structure for our bfs
+    std::vector<int> retval; // holds the visited vertices to return
+    std::map<int, bool> visited; // holds if its visited or not
+    for (auto v : G.vertexSet) { //init the visited map
+        visited.insert(std::pair<int, bool>(v, false));
+    }
+
+    //just a classic bfs
+    queue.push(s);
+    while(!queue.empty()) {
+        s = queue.front();
+        queue.pop();
+        for (auto i : G.getAdjacencies(s)) {
+            if(visited[i] == false) {
+                visited[i] = true;
+                retval.push_back(i);
+                queue.push(i);
+            }
+        }
+    }
     return retval;
 }

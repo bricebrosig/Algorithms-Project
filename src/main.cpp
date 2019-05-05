@@ -94,5 +94,39 @@ int main(int argc, char** argv)
 	testCycles.insert_edge(edge{2,6,1});
 	testCycles.print();
 
+	/*===deletion stuff below===*/
+
+	/**
+	 * lets do this graph
+	 * 
+	 * 8---1---2---3 -
+	 * \  |    |   |  \
+	 * 	7------6---5---4
+	 */ 
+
+	printf("\n\ntesting deletion\n\n");
+
+	std::vector<edge> del_edges;
+	del_edges.emplace_back(edge{8,1,3});
+	del_edges.emplace_back(edge{1,2,1});
+	del_edges.emplace_back(edge{2,3,2});
+	del_edges.emplace_back(edge{3,4,2});
+	del_edges.emplace_back(edge{4,5,1});
+	del_edges.emplace_back(edge{5,6,2});
+	del_edges.emplace_back(edge{6,7,3});
+	del_edges.emplace_back(edge{7,8,1});
+	del_edges.emplace_back(edge{1,7,2});
+	del_edges.emplace_back(edge{2,6,1});
+	del_edges.emplace_back(edge{3,5,3});
+
+	Graph del_orig(del_edges);
+	del_orig.print();
+
+	Graph del_mst = KruskalMST(del_orig);
+	del_mst.delete_edge(del_orig, edge{2,3,2});
+
+	printf("After the delete\n\n");
+	del_mst.print();
+
 	return 0;
 }
