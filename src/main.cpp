@@ -70,6 +70,12 @@ int main(int argc, char** argv)
 	printf("mst printed here:\n");
 	mst.print();
 
+	mst.insert_edge(edge{350, 860, -1});
+	mst.print();
+
+	mst.delete_edge(graph, edge{861, 860, 0});
+	mst.print();
+
 	/* and now this one
 	
 		1--2--3
@@ -79,54 +85,55 @@ int main(int argc, char** argv)
 		NOTE: exclamation is the inserted edge for testing
 	*/
 
-	printf("\n==testing insertion==\n\n");
+	// printf("\n==testing insertion==\n\n");
 
-	std::vector<edge> test;
+	// std::vector<edge> test;
 
-	test.emplace_back(edge{1,2,2});
-	test.emplace_back(edge{2,3,2});
-	test.emplace_back(edge{3,5,3});
-	test.emplace_back(edge{5,4,2});
-	test.emplace_back(edge{5,6,2});
-	test.emplace_back(edge{1,7,1});
+	// test.emplace_back(edge{1,2,2});
+	// test.emplace_back(edge{2,3,2});
+	// test.emplace_back(edge{3,5,3});
+	// test.emplace_back(edge{5,4,2});
+	// test.emplace_back(edge{5,6,2});
+	// test.emplace_back(edge{1,7,1});
 
-	Graph testCycles(test);
-	testCycles.insert_edge(edge{2,6,1});
-	testCycles.print();
+	// Graph testCycles(test);
+	// testCycles.insert_edge(edge{2,6,1});
+	// testCycles.print();
 
-	/*===deletion stuff below===*/
+	// /*===deletion stuff below===*/
 
-	/**
-	 * lets do this graph
-	 * 
-	 * 8---1---2---3 -
-	 * \  |    |   |  \
-	 * 	7------6---5---4
-	 */ 
+	// /**
+	//  * lets do this graph
+	//  * 
+	//  * 8---1---2---3 -
+	//  * \  |    |   |  \
+	//  * 	7------6---5---4
+	//  */ 
 
-	printf("\n\ntesting deletion\n\n");
+	// printf("\n\ntesting deletion\n\n");
 
-	std::vector<edge> del_edges;
-	del_edges.emplace_back(edge{8,1,3});
-	del_edges.emplace_back(edge{1,2,1});
-	del_edges.emplace_back(edge{2,3,2});
-	del_edges.emplace_back(edge{3,4,2});
-	del_edges.emplace_back(edge{4,5,1});
-	del_edges.emplace_back(edge{5,6,2});
-	del_edges.emplace_back(edge{6,7,3});
-	del_edges.emplace_back(edge{7,8,1});
-	del_edges.emplace_back(edge{1,7,2});
-	del_edges.emplace_back(edge{2,6,1});
-	del_edges.emplace_back(edge{3,5,3});
+	// std::vector<edge> del_edges;
+	// del_edges.emplace_back(edge{8,1,3});
+	// del_edges.emplace_back(edge{1,2,1});
+	// del_edges.emplace_back(edge{2,3,2});
+	// del_edges.emplace_back(edge{3,4,2});
+	// del_edges.emplace_back(edge{4,5,1});
+	// del_edges.emplace_back(edge{5,6,2});
+	// del_edges.emplace_back(edge{6,7,3});
+	// del_edges.emplace_back(edge{7,8,1});
+	// del_edges.emplace_back(edge{1,7,2});
+	// del_edges.emplace_back(edge{2,6,1});
+	// del_edges.emplace_back(edge{3,5,3});
 
-	Graph del_orig(del_edges);
-	del_orig.print();
+	// Graph del_orig(del_edges);
+	// del_orig.print();
 
-	Graph del_mst = KruskalMST(del_orig);
-	del_mst.delete_edge(del_orig, edge{2,3,2});
+	// Graph del_mst = KruskalMST(del_orig);
+	// del_mst.print();
+	// del_mst.delete_edge(del_orig, edge{2,3,2});
 
-	printf("After the delete\n\n");
-	del_mst.print();
+	// printf("After the delete\n\n");
+	// del_mst.print();
 
 	return 0;
 }

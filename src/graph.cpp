@@ -3,7 +3,7 @@
 void Graph::print() {
     printf("Graph pretty print:\n");
     for(auto e : edgeSet) {
-        printf("%d - %d : %f\n", e.src, e.dest, e.weight);
+        printf("%d - %d : %d\n", e.src, e.dest, e.weight);
     }  
 }
 
@@ -216,7 +216,7 @@ Graph KruskalMST(Graph graph)
 
     // Allocate memory for creating V subsets 
     //subset *subsets = (subset*) malloc( V * sizeof(subset) );
-    std::vector<subset> subsets(V); 
+    std::vector<subset> subsets(V + 1); 
   
     // Create V subsets with single elements 
     for (int v = 0; v < V; ++v) { 
@@ -258,9 +258,9 @@ Graph KruskalMST(Graph graph)
 
     // print the contents of result[] to display the 
     // built MST 
-    printf("Following are the edges in the constructed MST\n"); 
-    for (auto r : result) 
-        printf("%d -- %d == %f\n", r.src, r.dest, r.weight); 
+    // printf("Following are the edges in the constructed MST\n"); 
+    // for (auto r : result) 
+    //     printf("%d -- %d == %d\n", r.src, r.dest, r.weight); 
 
     //now that result has what it needs, make the graph ( tree ) with that stuff
     Graph resultant_mst = Graph(result);

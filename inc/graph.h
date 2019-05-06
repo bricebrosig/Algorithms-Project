@@ -17,7 +17,7 @@ enum color {WHITE, GRAY, BLACK}; //simple enum for the color tracking in the bfs
  */ 
 typedef struct edge {
     int src, dest;
-    float weight;
+    int weight;
 
     bool operator==(const edge& e) {
         return ((src == e.src) && (dest == e.dest) && (weight == e.weight))
