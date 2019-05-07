@@ -65,49 +65,49 @@ void bigGraph()
     Graph mst = KruskalMST(graph);
 
 	printf("mst printed here:\n");
-	mst.print();
-
+	//mst.print();
 	struct timeval before, after, result; //time for before, after, and subtracting the two
     gettimeofday(&before, NULL); //time before
 
-	mst.delete_edge(graph, edge{141 , 136 , -333});
-	mst.delete_edge(graph, edge{456 , 297 , -212});
-	mst.delete_edge(graph, edge{385 , 356 , -192});
-	mst.delete_edge(graph, edge{417 , 381 , -153});
-	mst.delete_edge(graph, edge{235 , 232 , -117});
-	mst.delete_edge(graph, edge{246 , 163 , -109});
-	mst.delete_edge(graph, edge{333 , 247 , -78});
-	mst.delete_edge(graph, edge{191 , 108 , -72});
-	mst.delete_edge(graph, edge{339 , 146 , -70});
-	mst.delete_edge(graph, edge{140 , 22 , -68});
-	mst.delete_edge(graph, edge{493 , 302 , -66});
-	mst.delete_edge(graph, edge{142 , 133 , -62});
-	mst.delete_edge(graph, edge{91 , 71 , -57});
-	mst.delete_edge(graph, edge{477 , 473 , -44});
-	mst.delete_edge(graph, edge{247 , 202 , -20});
+	mst.delete_edge(graph, edge{817, 816, -47});
+	mst.delete_edge(graph, edge{30, 27, -1});
+	mst.delete_edge(graph, edge{327, 241, -89});
+	mst.delete_edge(graph, edge{335, 330, -2});
+	mst.delete_edge(graph, edge{9, 5, -4});
+	mst.delete_edge(graph, edge{1093, 1091, -5});
+	mst.delete_edge(graph, edge{547, 515, -59});
+	mst.delete_edge(graph, edge{968, 465, -65});
+	mst.delete_edge(graph, edge{516, 515, -416});
+	mst.delete_edge(graph, edge{1081, 1074, -85});
+	mst.delete_edge(graph, edge{1059, 677, -243});
+	mst.delete_edge(graph, edge{1121, 670, -54});
+	mst.delete_edge(graph, edge{1057, 654, -144});
+	mst.delete_edge(graph, edge{318, 94, -110});
+	mst.delete_edge(graph, edge{433, 416, -91});
 
 	gettimeofday(&after, NULL); //time after8
     timersub(&after, &before, &result); //subtract the two times
 
 	printf("Time for delete:\n\tsec: %li\n\tusec: %li\n\n", result.tv_sec, result.tv_usec);
+	//mst.print();
 
 	gettimeofday(&before, NULL); //time before
 
-	mst.insert_edge(edge{141 , 136 , -333});
-	mst.insert_edge(edge{456 , 297 , -212});
-	mst.insert_edge(edge{385 , 356 , -192});
-	mst.insert_edge(edge{417 , 381 , -153});
-	mst.insert_edge(edge{235 , 232 , -117});
-	mst.insert_edge(edge{246 , 163 , -109});
-	mst.insert_edge(edge{333 , 247 , -78});
-	mst.insert_edge(edge{191 , 108 , -72});
-	mst.insert_edge(edge{339 , 146 , -70});
-	mst.insert_edge(edge{140 , 22 , -68});
-	mst.insert_edge(edge{493 , 302 , -66});
-	mst.insert_edge(edge{142 , 133 , -62});
-	mst.insert_edge(edge{91 , 71 , -57});
-	mst.insert_edge(edge{477 , 473 , -44});
-	mst.insert_edge(edge{247 , 202 , -20});
+	mst.insert_edge(edge{817, 816, -47});
+	mst.insert_edge(edge{30, 27, -1});
+	mst.insert_edge(edge{327, 241, -89});
+	mst.insert_edge(edge{335, 330, -2});
+	mst.insert_edge(edge{9, 5, -4});
+	mst.insert_edge(edge{1093, 1091, -5});
+	mst.insert_edge(edge{547, 515, -59});
+	mst.insert_edge(edge{968, 465, -65});
+	mst.insert_edge(edge{516, 515, -416});
+	mst.insert_edge(edge{1081, 1074, -85});
+	mst.insert_edge(edge{1059, 677, -243});
+	mst.insert_edge(edge{1121, 670, -54});
+	mst.insert_edge(edge{1057, 654, -144});
+	mst.insert_edge(edge{318, 94, -110});
+	mst.insert_edge(edge{433, 416, -91});
 
 	gettimeofday(&after, NULL); //time after8
     timersub(&after, &before, &result); //subtract the two times
