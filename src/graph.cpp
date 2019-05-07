@@ -22,7 +22,7 @@ void Graph::print() {
  */ 
 int Graph::insert_edge(edge e) {
     if(std::find(edgeSet.begin(), edgeSet.end(), e) != edgeSet.end()) { // if it already exists in the graph
-        printf("Did not find edge: %d-%d:%d in the graph\n", e.src, e.dest, e.weight);
+        //printf("edge already exists: %d-%d:%d in the graph\n", e.src, e.dest, e.weight);
         return 0; //get out we dont add it
     }
 
@@ -55,11 +55,11 @@ int Graph::insert_edge(edge e) {
 
         for(auto i : edgeSet) { // look through all the edges
             if(i == cycle[biggest_index]) {
-                printf("deleting edge: %d-%d:%d\n", i.src, i.dest, i.weight);
-                 if(true_delete(i) == 0) {
-                     printf("Delete had a problem!\n");
-                 }
-                 return 1;
+                //printf("deleting edge: %d-%d:%d\n", i.src, i.dest, i.weight);
+                if(true_delete(i) == 0) {
+                    printf("Delete had a problem!\n");
+                }
+                return 1;
             }
         }
     }
@@ -77,13 +77,13 @@ int Graph::insert_edge(edge e) {
  */
 int Graph::delete_edge(Graph original, edge e) {
     int smallestEdge = INT_MAX; // for tracking the smallest
-    edge toAdd;
+    edge toAdd {-1,-1,-1};
     std::vector<int> disjoint_vertices;
     std::map<int, bool> map;
 
     //get rid of the edge and then find the disjoint vertices
     true_delete(e);
-    disjoint_vertices = breadFirstSearch(*this, e.src);
+    disjoint_vertices = breadFirstSearch(e.src);
 
     /**
      * for everything in the original vertex add it to the map and set it to false meaning its not in the disjoint set
@@ -93,22 +93,21 @@ int Graph::delete_edge(Graph original, edge e) {
     for(auto v : original.vertexSet)
         map.insert(std::pair<int, bool>(v, false));
 
-    for(auto v : disjoint_vertices)
-        map[v] = true;
+    for(auto d : disjoint_vertices)
+        map[d] = true;
 
     //for each of the edges, add the ones who have a src xor dest in the disjoint verices
     for(auto i : original.edgeSet) {
         if( (map[i.src]) ^ (map[i.dest]) ){
-            if(!(i == e) && i.weight < smallestEdge) {
+            //printf("looking at edge: %d-%d:%d\n", i.src, i.dest, i.weight);
+            if( (!(i == e)) && i.weight < smallestEdge) {
                 smallestEdge = i.weight;
                 toAdd = i; //save that as the one that we will add to the tree
             }
         }
     }
 
-    true_insert(toAdd); //add the smallest to the tree
-
-    return 0;
+    return true_insert(toAdd); //add the smallest to the tree
 }
 
 std::vector<int> Graph::getAdjacencies(int s) 
@@ -137,6 +136,8 @@ int Graph::getWeight(int src, int dest)
 int Graph::true_insert(edge e)
 {
     if(std::find(edgeSet.begin(), edgeSet.end(), e) != edgeSet.end()) //it already in there
+        return 0;
+    else if(e.src < 0 || e.dest < 0) //dissallow negative indexing
         return 0;
     else {
         edgeSet.push_back(e);
@@ -230,7 +231,7 @@ Graph KruskalMST(Graph graph)
         // the index for next iteration 
         
         edge next_edge = temp_edges[i++];
-        if(i > temp_edges.size())
+        if(i > (int) temp_edges.size())
         {
             printf("i is too big! e: %d, V-1: %d\n", e, V-1);
             Graph resultant_mst = Graph(result);
@@ -312,10 +313,10 @@ std::vector<edge> findCycle(Graph G, edge e)
     }
     retval.push_back(e); // the actual one they wanted to add
 
-    printf("Edges in the cycle:\n");
-    for(auto e : retval) {
-        printf("\t%d - %d : %d\n", e.src, e.dest, e.weight);
-    }
+    //printf("Edges in the cycle:\n");
+    // for(auto e : retval) {
+    //     printf("\t%d - %d : %d\n", e.src, e.dest, e.weight);
+    // }
 
     return retval;
 }
@@ -327,12 +328,12 @@ std::vector<edge> findCycle(Graph G, edge e)
  * motivation is that we want to know what is disjoint from the rest of a graph
  * for the delete so we know what edges to add back
  */
-std::vector<int> breadFirstSearch(Graph G, int s)
+std::vector<int> Graph::breadFirstSearch(int s)
 {
     std::queue<int> queue; // queue data structure for our bfs
     std::vector<int> retval; // holds the visited vertices to return
     std::map<int, bool> visited; // holds if its visited or not
-    for (auto v : G.vertexSet) { //init the visited map
+    for (auto v : vertexSet) { //init the visited map
         visited.insert(std::pair<int, bool>(v, false));
     }
 
@@ -341,7 +342,7 @@ std::vector<int> breadFirstSearch(Graph G, int s)
     while(!queue.empty()) {
         s = queue.front();
         queue.pop();
-        for (auto i : G.getAdjacencies(s)) {
+        for (auto i : getAdjacencies(s)) {
             if(visited[i] == false) {
                 visited[i] = true;
                 retval.push_back(i);

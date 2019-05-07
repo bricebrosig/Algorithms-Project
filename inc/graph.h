@@ -8,6 +8,7 @@
 #include <queue>
 #include <map>
 #include "limits.h"
+#include "sys/time.h"
 
 enum color {WHITE, GRAY, BLACK}; //simple enum for the color tracking in the bfs
 
@@ -121,6 +122,18 @@ public:
     int getWeight(int src, int dest);
 
     /**
+     * @brief: a bfs that returns the nodes it visited. The intention is that this graph
+     *         is used on a disjoint graph to only return the nodes from one of the components.
+     *         for use in the delete function in the graph class
+     * @param graph: takes a graph object to perform the bfs on
+     * @param int: takes a starting node 
+     * @returns: vector of ints that are the vertices that it visited
+     * @requires: tentatively, that the graph be disjoint
+     *            also requires that the int is a vertex in the graph
+     */
+    std::vector<int> breadFirstSearch(int);
+
+    /**
      * @brief: simple pretty print for the graph. Walks through edge set and prints the src
      *          dest, and weight associated on each line
      * @return: void; just prints to terminal
@@ -159,17 +172,7 @@ Graph KruskalMST(Graph);
  */
 std::vector<edge> findCycle(Graph, edge);
 
-/**
- * @brief: a bfs that returns the nodes it visited. The intention is that this graph
- *         is used on a disjoint graph to only return the nodes from one of the components.
- *         for use in the delete function in the graph class
- * @param graph: takes a graph object to perform the bfs on
- * @param int: takes a starting node 
- * @returns: vector of ints that are the vertices that it visited
- * @requires: tentatively, that the graph be disjoint
- *            also requires that the int is a vertex in the graph
- */
-std::vector<int> breadFirstSearch(Graph, int);
+
 
 
  

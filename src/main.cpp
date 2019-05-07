@@ -32,8 +32,8 @@ int main(int argc, char** argv)
 			//we can't have nodes with the same src and dest
 			if(vec1 != vec2)
 			{
-				printf("adding : {%d, %d, %f}\n", vec1, vec2, weight); 
-			edges.emplace_back(edge{vec1, vec2, weight});
+				printf("adding : {%d, %d, %d}\n", vec1, vec2, (int) weight); 
+				edges.emplace_back(edge{vec1, vec2, (int) weight});
 			}
 			
 		}
@@ -68,13 +68,55 @@ int main(int argc, char** argv)
     Graph mst = KruskalMST(graph);
 
 	printf("mst printed here:\n");
-	mst.print();
+	//mst.print();
+	struct timeval before, after, result; //time for before, after, and subtracting the two
+    gettimeofday(&before, NULL); //time before
 
-	mst.insert_edge(edge{350, 860, -1});
-	mst.print();
+	mst.delete_edge(graph, edge{817, 816, -47});
+	mst.delete_edge(graph, edge{30, 27, -1});
+	mst.delete_edge(graph, edge{327, 241, -89});
+	mst.delete_edge(graph, edge{335, 330, -2});
+	mst.delete_edge(graph, edge{9, 5, -4});
+	mst.delete_edge(graph, edge{1093, 1091, -5});
+	mst.delete_edge(graph, edge{547, 515, -59});
+	mst.delete_edge(graph, edge{968, 465, -65});
+	mst.delete_edge(graph, edge{516, 515, -416});
+	mst.delete_edge(graph, edge{1081, 1074, -85});
+	mst.delete_edge(graph, edge{1059, 677, -243});
+	mst.delete_edge(graph, edge{1121, 670, -54});
+	mst.delete_edge(graph, edge{1057, 654, -144});
+	mst.delete_edge(graph, edge{318, 94, -110});
+	mst.delete_edge(graph, edge{433, 416, -91});
 
-	mst.delete_edge(graph, edge{861, 860, 0});
-	mst.print();
+	gettimeofday(&after, NULL); //time after8
+    timersub(&after, &before, &result); //subtract the two times
+
+	printf("Time for delete:\n\tsec: %li\n\tusec: %li\n\n", result.tv_sec, result.tv_usec);
+	//mst.print();
+
+	gettimeofday(&before, NULL); //time before
+
+	mst.insert_edge(edge{817, 816, -47});
+	mst.insert_edge(edge{30, 27, -1});
+	mst.insert_edge(edge{327, 241, -89});
+	mst.insert_edge(edge{335, 330, -2});
+	mst.insert_edge(edge{9, 5, -4});
+	mst.insert_edge(edge{1093, 1091, -5});
+	mst.insert_edge(edge{547, 515, -59});
+	mst.insert_edge(edge{968, 465, -65});
+	mst.insert_edge(edge{516, 515, -416});
+	mst.insert_edge(edge{1081, 1074, -85});
+	mst.insert_edge(edge{1059, 677, -243});
+	mst.insert_edge(edge{1121, 670, -54});
+	mst.insert_edge(edge{1057, 654, -144});
+	mst.insert_edge(edge{318, 94, -110});
+	mst.insert_edge(edge{433, 416, -91});
+
+	gettimeofday(&after, NULL); //time after8
+    timersub(&after, &before, &result); //subtract the two times
+
+	printf("Time for insert:\n\tsec: %li\n\tusec: %li\n\n", result.tv_sec, result.tv_usec);
+	//mst.print();
 
 	/* and now this one
 	
@@ -102,13 +144,13 @@ int main(int argc, char** argv)
 
 	// /*===deletion stuff below===*/
 
-	// /**
-	//  * lets do this graph
-	//  * 
-	//  * 8---1---2---3 -
-	//  * \  |    |   |  \
-	//  * 	7------6---5---4
-	//  */ 
+	/**
+	 * lets do this graph
+	 * 
+	 * 8---1---2---3 -
+	 * \  |    |   |  \
+	 * 	7------6---5---4
+	 */ 
 
 	// printf("\n\ntesting deletion\n\n");
 
